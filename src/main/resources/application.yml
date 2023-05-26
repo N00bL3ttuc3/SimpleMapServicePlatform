@@ -1,0 +1,19 @@
+server:
+  port: 82
+
+mybatis-plus:
+  mapper-locations: mapper/*.xml
+
+#spring:
+#  datasource:
+#    driver-class-name: org.postgresql.Driver
+#    username: postgres
+#    password: 123
+#    url: jdbc:postgresql://localhost:5432/city_routing_new
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: osm
+    password: osm
+    url: jdbc:postgresql://192.168.65.8:5432/gis

@@ -1,0 +1,1 @@
+rm -r /Users/bianzhenkun/Library/Caches/Google/Chrome/Profile\ 1/Cache/Cache_Data
