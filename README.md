@@ -4,7 +4,7 @@
 
 ## 系统介绍
 
-设计并实现了一种基于WebGIS的电子地图服务平台，使之具有地图底图图层的管理、地点区域标记、逆向地理编码、多种路径规划问题的实现功能。前后端分离，利用Vue整合Leaflet、Openlayers等开源 WebGIS 库实现前端框架的搭建，采用axios进行前后端的交互操作，后端的实现采用Spring Boot技术整合MyBatis plus、Junit等常用技术外，还整合了GraphHopper和Jsprit导航规划包，使用Nominatim技术实现对地图上地点的反向查找，使用 PostgreSQL+PostGIS进行数据 存储，并在Ubuntu18.04上对OpenStreetMap服务器 的本地化进行了实现，并最后通过黑盒测试进行了软件各项指标的检 测，证明了本系统的正确性与可用性。
+  设计并实现了一种基于WebGIS的电子地图服务平台，使之具有地图底图图层的管理、地点区域标记、逆向地理编码、多种路径规划问题的实现功能。前后端分离，利用Vue整合Leaflet、Openlayers等开源WebGIS库实现前端框架的搭建，采用axios进行前后端的交互操作，后端的实现采用Spring Boot技术整合MyBatis plus、Junit等常用技术外，还整合了GraphHopper和Jsprit导航规划包，使用Nominatim技术实现对地图上地点的反向查找，使用PostgreSQL+PostGIS进行数据 存储，并在Ubuntu18.04上对OpenStreetMap服务器的本地化进行了实现，并最后通过黑盒测试进行了软件各项指标的检测，证明了本系统的正确性与可用性。
 
 ## 一些说明
 
