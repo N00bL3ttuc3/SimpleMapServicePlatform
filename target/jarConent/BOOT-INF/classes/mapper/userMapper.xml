@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.UserDao" >
+
+    <select id="findUserByName" resultType="com.example.model.User">
+        select * from usertable where username = #{username,mode=IN,jdbcType=VARCHAR} limit 1
+    </select>
+
+    <insert id="addUser">
+        insert into usertable (username,password,identity)
+        values (
+                #{username,mode=IN,jdbcType=VARCHAR},
+                #{password,mode=IN,jdbcType=VARCHAR},
+                #{identity,mode=IN,jdbcType=VARCHAR}
+                );
+    </insert>
+
+</mapper>

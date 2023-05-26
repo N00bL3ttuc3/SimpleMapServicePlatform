@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.OsmEditDao" >
+
+    <select id="getGeomFromLatLng" resultType="com.example.model.OSMPolygonFeatures">
+        select name,aeroway,amenity,highway,landuse,leisure,"natural",shop,way from planet_osm_polygon
+        where ST_Contains(way,ST_Transform(
+                ST_GeomFromText(#{point,mode=IN,jdbcType=VARCHAR},4326),3857)) = true
+          and name is not null
+        order by ST_Area(way) limit 1
+    </select>
+
+    <update id="updatePolygons">
+        update planet_osm_polygon set
+            name = #{name,mode=IN,jdbcType=VARCHAR},
+            aeroway = #{aeroway,mode=IN,jdbcType=VARCHAR},
+            amenity = #{amenity,mode=IN,jdbcType=VARCHAR},
+            highway = #{highway,mode=IN,jdbcType=VARCHAR},
+            landuse = #{landuse,mode=IN,jdbcType=VARCHAR},
+            leisure = #{leisure,mode=IN,jdbcType=VARCHAR},
+            "natural" = #{natural,mode=IN,jdbcType=VARCHAR},
+            shop = #{shop,mode=IN,jdbcType=VARCHAR}
+        where way = #{way,mode=IN,jdbcType=VARCHAR}
+    </update>
+
+    <insert id="insertPolygons">
+        insert into planet_osm_polygon(name,aeroway,amenity,highway,landuse,leisure,"natural",shop,way)
+        values (#{name,mode=IN,jdbcType=VARCHAR},
+                #{aeroway,mode=IN,jdbcType=VARCHAR},
+                #{amenity,mode=IN,jdbcType=VARCHAR},
+                #{highway,mode=IN,jdbcType=VARCHAR},
+                #{landuse,mode=IN,jdbcType=VARCHAR},
+                #{leisure,mode=IN,jdbcType=VARCHAR},
+                #{natural,mode=IN,jdbcType=VARCHAR},
+                #{shop,mode=IN,jdbcType=VARCHAR},
+                st_transform(st_geomfromtext(#{way,mode=IN,jdbcType=VARCHAR},4326),3857));
+        update planet_osm_polygon set way_area = ST_Area(way) where way = st_transform(st_geomfromtext(#{way,mode=IN,jdbcType=VARCHAR},4326),3857)
+    </insert>
+
+    <delete id="deletePolygons">
+        delete from planet_osm_polygon where way = #{way,mode=IN,jdbcType=VARCHAR}
+    </delete>
+
+
+
+
+    <select id="getLineFromLatLng" resultType="com.example.model.OSMLineFearures">
+        select name,railway,highway,way from planet_osm_line
+        where ST_Distance(
+            way,
+            ST_Transform(ST_GeometryFromText(#{point,mode=IN,jdbcType=VARCHAR},4326),3857)) <![CDATA[ <= ]]> 20 limit 1
+    </select>
+
+    <update id="updateLine">
+        update planet_osm_line set
+            name = #{name,mode=IN,jdbcType=VARCHAR},
+            highway = #{highway,mode=IN,jdbcType=VARCHAR},
+            railway = #{railway,mode=IN,jdbcType=VARCHAR}
+        where way = #{way,mode=IN,jdbcType=VARCHAR}
+    </update>
+
+    <insert id="insertLine">
+        insert into planet_osm_line(name,highway,railway,way)
+        values (#{name,mode=IN,jdbcType=VARCHAR},
+                #{highway,mode=IN,jdbcType=VARCHAR},
+                #{railway,mode=IN,jdbcType=VARCHAR},
+                st_transform(st_geomfromtext(#{way,mode=IN,jdbcType=VARCHAR},4326),3857))
+    </insert>
+
+    <delete id="deleteLine">
+        delete from planet_osm_line where way = #{way,mode=IN,jdbcType=VARCHAR}
+    </delete>
+
+
+
+    <select id="getPointFromLatLng" resultType="com.example.model.OSMPointFeatures">
+        select name,amenity,leisure,shop,way from planet_osm_point
+        where ST_Distance(
+                      way,
+                      ST_Transform(ST_GeometryFromText(#{point,mode=IN,jdbcType=VARCHAR},4326),3857)) <![CDATA[ <= ]]> 20 limit 1
+    </select>
+
+    <update id="updatePoint">
+        update planet_osm_point set
+                                   name = #{name,mode=IN,jdbcType=VARCHAR},
+                                   amenity = #{amenity,mode=IN,jdbcType=VARCHAR},
+                                   leisure = #{leisure,mode=IN,jdbcType=VARCHAR},
+                                   shop = #{shop,mode=IN,jdbcType=VARCHAR}
+        where way = #{way,mode=IN,jdbcType=VARCHAR}
+    </update>
+
+    <insert id="insertPoint">
+        insert into planet_osm_point(name,amenity,leisure,shop,way)
+        values (#{name,mode=IN,jdbcType=VARCHAR},
+                #{amenity,mode=IN,jdbcType=VARCHAR},
+                #{leisure,mode=IN,jdbcType=VARCHAR},
+                #{shop,mode=IN,jdbcType=VARCHAR},
+                st_transform(st_geomfromtext(#{way,mode=IN,jdbcType=VARCHAR},4326),3857))
+    </insert>
+
+    <delete id="deletePoint">
+        delete from planet_osm_point where way = #{way,mode=IN,jdbcType=VARCHAR}
+    </delete>
+</mapper>
