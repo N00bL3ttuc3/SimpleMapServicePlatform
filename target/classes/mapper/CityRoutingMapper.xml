@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.CityRoutingDao" >
+    <select id="p2pPlan"  resultType="com.example.model.P2pResult">
+        SELECT * FROM wrk_fromAtoB(
+                #{edges_subset,mode=IN,jdbcType=VARCHAR},
+                #{x1,mode=IN,jdbcType=DOUBLE},
+                #{y1,mode=IN,jdbcType=DOUBLE},
+                #{x2,mode=IN,jdbcType=DOUBLE},
+                #{y2,mode=IN,jdbcType=DOUBLE}
+            );
+    </select>
+
+    <select id="xy2topology" resultType="Integer">
+        select * from XYTotopology(
+                #{x,mode=IN,jdbcType=INTEGER},
+                #{y,mode=IN,jdbcType=INTEGER}
+            )
+    </select>
+
+    <select id="tspPlan" resultType="com.example.model.TspResult">
+        select * from wrk_tsp_getPath(
+                #{edges_subset,mode=IN,jdbcType=VARCHAR},
+                #{source,mode=IN,jdbcType=ARRAY,typeHandler=com.example.model.ArrayTypeHandler},
+                #{start_id,mode=IN,jdbcType=INTEGER}
+            )
+    </select>
+
+    <select id="posTransform" resultType="String">
+        SELECT ST_Transform(st_geometryfromtext(#{inputGeom,mode=IN,jdbcType=VARCHAR}
+            ,#{sourceSrid,mode=IN,jdbcType=INTEGER}),#{targetSrid,mode=IN,jdbcType=INTEGER})
+    </select>
+</mapper>
